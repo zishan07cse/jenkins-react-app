@@ -1,17 +1,29 @@
 pipeline {
-     agent any
-     stages {
-        stage("Build") {
+    agent any
+
+    stages {
+        stage('Install Dependencies') {
             steps {
-                sh "sudo npm install"
-                sh "sudo npm run build"
+                echo 'Installing dependencies...'
+                sh 'npm install'
             }
         }
-        stage("Deploy") {
+        
+        stage('Build') {
             steps {
-                sh "sudo rm -rf /var/www/jenkins-react-app"
-                sh "sudo cp -r ${WORKSPACE}/build/ /var/www/jenkins-react-app/"
+                echo 'Building the React application...'
+                sh 'npm run build'
             }
         }
     }
+    
+    post {
+        success {
+            echo 'Build completed successfully!'
+        }
+        failure {
+            echo 'Build failed. Please check the logs.'
+        }
+    }
 }
+

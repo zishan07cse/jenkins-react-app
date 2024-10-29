@@ -2,17 +2,22 @@ pipeline {
     agent any
 
     stages {
+        stage('Checkout') {
+            steps {
+                echo 'Checking out code...'
+                checkout scm
+            }
+        }
         stage('Install Dependencies') {
             steps {
                 echo 'Installing dependencies...'
-                sh 'npm install'
+                bat 'npm install' // Use 'bat' instead of 'sh' for Windows
             }
         }
-        
         stage('Build') {
             steps {
-                echo 'Building the React application...'
-                sh 'npm run build'
+                echo 'Building project...'
+                bat 'npm run build'
             }
         }
     }
@@ -26,4 +31,3 @@ pipeline {
         }
     }
 }
-
